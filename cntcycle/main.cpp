@@ -2,6 +2,7 @@
 #include <ctime>
 #include <vector>
 #include <string>
+#include <numeric>
 #include <fstream>
 #include <iostream>
 #include <Eigen/Core>
@@ -191,6 +192,12 @@ long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen:
 
 }
 
+/**
+ * Remove k-in_degree nodes in directed graph
+ * @param Graph
+ * @param DegK k-degree
+ * @return cycles' number vector, each element represents the number of cycles of a SCC
+ */
 template <class PGraph>
 void DelInDeg(PGraph& Graph, const int& InDegK) {
 	TIntV DelNIdV;
@@ -204,6 +211,12 @@ void DelInDeg(PGraph& Graph, const int& InDegK) {
 	}
 }
 
+/**
+ * Remove k-out_degree nodes in directed graph
+ * @param Graph
+ * @param DegK k-degree
+ * @return cycles' number vector, each element represents the number of cycles of a SCC
+ */
 template <class PGraph>
 void DelOutDeg(PGraph& Graph, const int& OutDegK) {
 	TIntV DelNIdV;
@@ -217,6 +230,12 @@ void DelOutDeg(PGraph& Graph, const int& OutDegK) {
 	}
 }
 
+/**
+ * Remove k-degree nodes in undirected graph
+ * @param Graph
+ * @param DegK k-degree
+ * @return cycles' number vector, each element represents the number of cycles of a SCC
+ */
 template <class PGraph>
 void DelDeg(PGraph& Graph, const int& DegK) {
 	TIntV DelNIdV;
@@ -230,6 +249,13 @@ void DelDeg(PGraph& Graph, const int& DegK) {
 	}
 }
 
+/**
+ * Calculate the number of cycles for each strongly connected component
+ * @param SCnComV, graph's scc
+ * @param is_directed, indicates whether the graph is a directed graph.
+ * @param Graph, graph
+ * @return cycles' number vector, each element represents the number of cycles of a SCC
+ */
 template <class PGraph>
 std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Graph)
 {
@@ -275,8 +301,8 @@ std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGrap
 int main() 
 {
 	// the config data path and result path;
-	std::string config_path = "";
-	std::string result_path = "";
+	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/undirected_graph_nodes10_config.txt";
+	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/undirected_graph_nodes10_result.txt";
 
 	// read config data
 	struct config config;
@@ -289,7 +315,6 @@ int main()
 
 	if (config.isDirected()) {
 		// load edge list
-
 		clock_t start = clock();
 		PNGraph G = LoadEdgeList<PNGraph>(config.edge_list_path.c_str());
 		clock_t end = clock();
@@ -301,6 +326,10 @@ int main()
 		out << "Read matrix : " << config_path << std::endl;
 		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
 		
+		
+		std::cout << "Before remove nodes, there are " << G->GetNodes() << std::endl;
+		out << "Before remove nodes, there are " << G->GetNodes() << std::endl;
+
 		// Removes all the node of out-degree and in-degree = 1 or 0.
 		start = clock();
 		DelInDeg(G, 0);
@@ -311,65 +340,85 @@ int main()
 		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 
 		// write result
-		std::cout << "Remove nodes cost : " << config_path << std::endl;
-		
-		out << "Read matrix : " << config_path << std::endl;
+		std::cout << "After remove nodes, there are " << G->GetNodes() << std::endl;
+		out << "After remove nodes, there are " << G->GetNodes() << std::endl;
+		std::cout << "Remove nodes cost : " << elapsed_secs << " s." << std::endl;
 		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
 
 		// Get Sccs and calculate the cycles' number.
 		TCnComV SCnComV;
+		start = clock();
 		GetSccs(G, SCnComV);
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+		std::cout << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
+		std::cout << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;
+		out << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
+		out << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;
+
+		// Calculate the number of cycles for each strongly connected component
+		start = clock();
 		cycle_num = CntSCCCycle(SCnComV, config.isDirected(), G);
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+		std::cout << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
+		out << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
 	}
 	else {
 		// load edge list
-		PUNGraph G = LoadEdgeList<PUNGraph>(config.edge_list_path.c_str(), 0, 1);
+		clock_t start = clock();
+		PUNGraph G = LoadEdgeList<PUNGraph>(config.edge_list_path.c_str());
+		clock_t end = clock();
+		double elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 
-		std::cout << G->GetNodes() << std::endl;
+		// write result
+		std::cout << "Read matrix : " << config_path << std::endl;
+		std::cout << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
+		out << "Read matrix : " << config_path << std::endl;
+		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
+
+
+		std::cout << "Before remove nodes, there are " << G->GetNodes() << std::endl;
+		out << "Before remove nodes, there are " << G->GetNodes() << std::endl;
+
 		// Removes all the node of out-degree and in-degree = 1 or 0.
+		start = clock();
 		DelDeg(G, 1);
 		DelDeg(G, 0);
-		std::cout << G->GetNodes() << std::endl;
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+
+		// write result
+		std::cout << "After remove nodes, there are " << G->GetNodes() << std::endl;
+		out << "After remove nodes, there are " << G->GetNodes() << std::endl;
+		std::cout << "Remove nodes cost : " << elapsed_secs << " s." << std::endl;
+		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
+
 
 		// Get Sccs and calculate the cycles' number.
 		TCnComV SCnComV;
+		start = clock();
 		GetSccs(G, SCnComV);
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+		std::cout << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
+		std::cout << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;
+		out << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
+		out << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;
+
+		// Calculate the number of cycles for each strongly connected component
+		start = clock();
 		cycle_num = CntSCCCycle(SCnComV, config.isDirected(), G);
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+		std::cout << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
+		out << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
+
 	}
-
-	for (auto i : cycle_num) {
-		std::cout << i << std::endl;
-	}
-
-
-	//Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> mat(config.num_nodes + 1, config.num_nodes + 1);
-	//readEdgeList(mat, config);
-	//std::cout << mat << std::endl;
-	//cout << config.num_nodes << endl;
-
-
-	//clock_t start = clock();
-	//Matrix<long long int, Dynamic, Dynamic> mat(config.num_nodes, config.num_nodes);
-	//readMatrixData(mat, config);
-	//clock_t end = clock();
-	//double elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-
-	//ofstream out(result_path);
-
-	//out << "读取矩阵花费:" << elapsed_secs << " s" << endl;
-
-	//start = clock();
-	//long long cnt = 0;
-	//if (!config.is_directed) {
-	//	cnt = countUndirectedCycle(mat);
-	//}
-	//else {
-	//	cnt = countDirectedCycle(mat);
-	//}
-	//end = clock();
-	//elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-	//out << "计算3、4、5元环花费时间:" << elapsed_secs << " s" << endl;
-	//out << "计算3、4、5元环数量为:" << cnt << "个。" << endl;
 
 	return 0;
 }

@@ -1,0 +1,9 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/undirected_graph_nodes10_config.txt
+Read matrix cost :0 s.
+Before remove nodes, there are 10
+After remove nodes, there are 8
+Read matrix cost :0 s.
+There are 2 strongly connected components.
+Calculate strongly connected components costs: 0 s.
+Count all cycles cost : 0.001 s.
+There are 2cycles in graph.
