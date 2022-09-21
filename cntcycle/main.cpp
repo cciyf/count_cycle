@@ -13,6 +13,11 @@ const int delimlength = 1;
 
 using namespace TSnap;
 
+/*
+ * Configuration structure of graph data, 
+ * including graph directivity, 
+ * number of nodes, number of edges and data path.
+ */
 struct config {
 	bool is_directed = false;
 	int num_nodes;
@@ -56,6 +61,12 @@ struct config {
 	}
 };
 
+/**
+ * Get the graph edge list file path from the config file and read it to the mat.
+ * @param mat Eigen' matrix to store graph data
+ * @param config The graph data configuration.
+ * @return Data Reading Results
+ */
 bool readEdgeList(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat, config &config) {
 
 	std::string line;
@@ -68,9 +79,17 @@ bool readEdgeList(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &
 			
 			mat(atoi(line.substr(a + delimlength).c_str()), atoi(line.substr(0, a).c_str())) = 1;
 		}
+		return true;
 	}
+	return false;
 }
 
+/**
+ * Get the graph edge matrix file path from the config file and read it to the mat.
+ * @param mat Eigen' matrix to store graph data
+ * @param config The graph data configuration.
+ * @return Data Reading Results
+ */
 bool readMatrixData(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat, config &_config) {
 	int value;
 	std::string line;
@@ -92,7 +111,16 @@ bool readMatrixData(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>
 }
 
 
-
+/**
+ * Get the number of undirected graph 3-cycles, 4-cycles and 5-cycles.
+ * Let cn(G) be the number of n-cycles in G.
+ * Let A be the adjacency matrix of G.
+ * c3(G) = 1 / 6 * tr(A)
+ * c4(G) = 1 / 8 * (tr(A^4) - 2 q - 2 Σa_ij(2)(i != j))
+ * c5(G) = 1 / 10 * (tr(A^5) - 5 * tr(A^3) - 5 Σ(Σaij - 2)aii(2)))
+ * @param mat Eigen' matrix to store graph data
+ * @return cycles' number
+ */
 long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
 	long long cycle4_part2 = mat.sum();
 	
@@ -116,13 +144,17 @@ long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eige
 	long long cycle5_num = (cycle5_part1 - 5 * cycle5_part2 - 5 * cycle5_part3) / 10;
 
 
-	std::cout << "三元环有" << cycle3_num << "个" << std::endl;
-	std::cout << "四元环有" << cycle4_num << "个" << std::endl;
-	std::cout << "五元环有" << cycle5_num << "个" << std::endl;
+	std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
 	return cycle3_num + cycle4_num + cycle5_num;
-	
 }
 
+/**
+ * Get the number of directed graph 3-cycles, 4-cycles and 5-cycles.
+ * @param mat Eigen' matrix to store graph data
+ * @return cycles' number
+ */
 long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
 	Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> unmat = mat.transpose().array() * mat.array();		
 	long long cycle4_part2 = unmat.sum();
@@ -152,9 +184,9 @@ long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen:
 	
 
 
-	std::cout << "三元环有" << cycle3_num << "个" << std::endl;
-	std::cout << "四元环有" << cycle4_num << "个" << std::endl;
-	std::cout << "五元环有" << cycle5_num << "个" << std::endl;
+	std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
 	return cycle3_num + cycle4_num + cycle5_num;
 
 }
