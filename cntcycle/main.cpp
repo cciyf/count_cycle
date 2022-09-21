@@ -125,11 +125,9 @@ bool readMatrixData(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>
 long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
 	long long cycle4_part2 = mat.sum();
 	
-	std::cout << cycle4_part2 << std::endl;
 	Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> newmat = mat * mat;
 	long long cycle4_part3 = newmat.sum() - newmat.trace();
 	
-	std::cout << cycle4_part3 << std::endl;
 	newmat = newmat * mat;
 	long long cycle3_part1 = newmat.trace();
 	long long cycle5_part2 = cycle3_part1;
@@ -145,9 +143,9 @@ long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eige
 	long long cycle5_num = (cycle5_part1 - 5 * cycle5_part2 - 5 * cycle5_part3) / 10;
 
 
-	std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
-	std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
-	std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
 	return cycle3_num + cycle4_num + cycle5_num;
 }
 
@@ -166,7 +164,6 @@ long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen:
 	newunmat.resize(0, 0);
 
 	newmat = newmat * mat;
-	std::cout << newmat.diagonal() << std::endl;
 	long long cycle5_part2 = (unmat.colwise().sum() * newmat.diagonal()).sum();
 	long long cycle3_part1 = newmat.trace();
 
@@ -185,9 +182,9 @@ long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen:
 	
 
 
-	std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
-	std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
-	std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
 	return cycle3_num + cycle4_num + cycle5_num;
 
 }
@@ -289,7 +286,7 @@ std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGrap
 					mat(EI.GetSrcNId(), EI.GetDstNId()) = 1;
 					mat(EI.GetDstNId(), EI.GetSrcNId()) = 1;
 				}
-				cycle_num.push_back(countDirectedCycle(mat));
+				cycle_num.push_back(countUndirectedCycle(mat));
 			}
 		}
 	}

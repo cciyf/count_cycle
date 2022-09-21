@@ -5,5 +5,5 @@ After remove nodes, there are 8
 Read matrix cost :0 s.
 There are 2 strongly connected components.
 Calculate strongly connected components costs: 0 s.
-Count all cycles cost : 0 s.
-There are 2 cycles in graph.
+Count all cycles cost : 0.001 s.
+There are 2cycles in graph.
