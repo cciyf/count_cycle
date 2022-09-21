@@ -1,5 +1,0 @@
---------
-D:\code\C++\count_cycle\cntcycle\x64\Release\cntcycle.exe.Err
-Sat Sep 17 19:50:31 2022
-Execution stopped: (0<=ValN)&&(ValN<Vals) [Reason:'Index:3 Vals:3 MxVals:3 Type:TVec<class TInt,int>'], file d:\code\c++\count_cycle\cntcycle\cntcycle\snap\glib-core\ds.h, line 487
---------
