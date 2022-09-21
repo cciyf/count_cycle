@@ -274,27 +274,49 @@ std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGrap
 
 int main() 
 {
+	// the config data path and result path;
+	std::string config_path = "";
+	std::string result_path = "";
 
-	std::string config_path = "D:\\code\\C++\\count_cycle\\cntcycle\\Data\\email-Enron_config.txt";
-	std::string result_path = "D:\\code\\C++\\count_cycle\\cntcycle\\Data\\email-Enron_result.txt";
-
+	// read config data
 	struct config config;
 	std::vector<long long> cycle_num;
 	config.readPath(config_path);
 
+	// write result
+	std::ofstream out(result_path);
+
+
 	if (config.isDirected()) {
 		// load edge list
+
+		clock_t start = clock();
 		PNGraph G = LoadEdgeList<PNGraph>(config.edge_list_path.c_str());
+		clock_t end = clock();
+		double elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+
+		// write result
+		std::cout << "Read matrix : " << config_path << std::endl;
+		std::cout << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
+		out << "Read matrix : " << config_path << std::endl;
+		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
 		
-		std::cout << G->GetNodes() << std::endl;
 		// Removes all the node of out-degree and in-degree = 1 or 0.
+		start = clock();
 		DelInDeg(G, 0);
 		DelOutDeg(G, 0);
 		DelInDeg(G, 1);
 		DelOutDeg(G, 1);
-		std::cout << G->GetNodes() << std::endl;
+		end = clock();
+		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 
-		// Get Scc
+		// write result
+		std::cout << "Remove nodes cost : " << config_path << std::endl;
+		
+		out << "Read matrix : " << config_path << std::endl;
+		out << "Read matrix cost :" << elapsed_secs << " s." << std::endl;
+
+		// Get Sccs and calculate the cycles' number.
 		TCnComV SCnComV;
 		GetSccs(G, SCnComV);
 		cycle_num = CntSCCCycle(SCnComV, config.isDirected(), G);
@@ -309,7 +331,7 @@ int main()
 		DelDeg(G, 0);
 		std::cout << G->GetNodes() << std::endl;
 
-		// Get Scc
+		// Get Sccs and calculate the cycles' number.
 		TCnComV SCnComV;
 		GetSccs(G, SCnComV);
 		cycle_num = CntSCCCycle(SCnComV, config.isDirected(), G);
