@@ -1,3 +1,12 @@
-读取矩阵花费:206.973 s
-计算3、4、5元环花费时间:6159.43 s
-计算3、4、5元环数量为:2624783079个。
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/email-Enron_config.txt
+Read matrix cost :0.101 s.
+Before remove nodes, there are 36692
+After remove nodes, there are 25396
+Read matrix cost :0.002 s.
+There are 253 strongly connected components.
+Calculate strongly connected components costs: 0.018 s.
+Count all cycles cost : 1964.2 s.
+There are -1670182144 cycles in graph.
+There are 726616 3-cycles in graph.
+There are 36218772 4-cycles in graph.
+There are -1707127532 5-cycles in graph.

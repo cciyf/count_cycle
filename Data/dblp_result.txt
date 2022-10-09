@@ -1,0 +1,12 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/dblp_config.txt
+Read matrix cost :0.039 s.
+Before remove nodes, there are 13553
+After remove nodes, there are 13553
+Read matrix cost :0 s.
+There are 1268 strongly connected components.
+Calculate strongly connected components costs: 0.007 s.
+Count all cycles cost : 121.624 s.
+There are 669372236 cycles in graph.
+There are 426382 3-cycles in graph.
+There are 13382560 4-cycles in graph.
+There are 655563294 5-cycles in graph.

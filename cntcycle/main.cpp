@@ -15,6 +15,21 @@ const int delimlength = 1;
 using namespace TSnap;
 
 /*
+ * struct for cycles
+ */
+struct cyclenum {
+	long long num_3_cycles;
+	long long num_4_cycles;
+	long long num_5_cycles;
+	cyclenum(long long _num_3_cycles, long long _num_4_cycles, long long _num_5_cycles) {
+		num_3_cycles = _num_3_cycles;
+		num_4_cycles = _num_4_cycles;
+		num_5_cycles = _num_5_cycles;
+	}
+};
+
+
+/*
  * Configuration structure of graph data, 
  * including graph directivity, 
  * number of nodes, number of edges and data path.
@@ -122,7 +137,7 @@ bool readMatrixData(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic>
  * @param mat Eigen' matrix to store graph data
  * @return cycles' number
  */
-long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
+cyclenum countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
 	long long cycle4_part2 = mat.sum();
 	
 	Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> newmat = mat * mat;
@@ -146,7 +161,9 @@ long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eige
 	//std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
 	//std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
 	//std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
-	return cycle3_num + cycle4_num + cycle5_num;
+
+
+	return cyclenum(cycle3_num, cycle4_num, cycle5_num);
 }
 
 /**
@@ -154,7 +171,7 @@ long long countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eige
  * @param mat Eigen' matrix to store graph data
  * @return cycles' number
  */
-long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
+cyclenum countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> &mat) {
 	Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::Dynamic> unmat = mat.transpose().array() * mat.array();		
 	long long cycle4_part2 = unmat.sum();
 	
@@ -182,10 +199,10 @@ long long countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen:
 	
 
 
-	//std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
-	//std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
-	//std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
-	return cycle3_num + cycle4_num + cycle5_num;
+	//out << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	//out << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	//out << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
+	return cyclenum(cycle3_num, cycle4_num, cycle5_num);
 
 }
 
@@ -254,9 +271,9 @@ void DelDeg(PGraph& Graph, const int& DegK) {
  * @return cycles' number vector, each element represents the number of cycles of a SCC
  */
 template <class PGraph>
-std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Graph)
+std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Graph)
 {
-	std::vector<long long int> cycle_num;
+	std::vector<cyclenum> cycle_num;
 
 	if (is_directed) 
 	{
@@ -298,12 +315,12 @@ std::vector<long long int> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGrap
 int main() 
 {
 	// the config data path and result path;
-	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/undirected_graph_nodes10_config.txt";
-	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/undirected_graph_nodes10_result.txt";
+	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/email-Enron_config.txt";
+	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/email-Enron_result.txt";
 
 	// read config data
 	struct config config;
-	std::vector<long long> cycle_num;
+	std::vector<cyclenum> cycle_num;
 	config.readPath(config_path);
 
 	// write result
@@ -360,8 +377,13 @@ int main()
 		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 		std::cout << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
 		out << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
-		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
-		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles + b.num_4_cycles + b.num_5_cycles; }) << " cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles + b.num_4_cycles + b.num_5_cycles; }) << " cycles in graph." << std::endl;
+
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles; }) << " 3-cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
+
 	}
 	else {
 		// load edge list
@@ -412,8 +434,13 @@ int main()
 		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 		std::cout << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
 		out << "Count all cycles cost : " << elapsed_secs << " s." << std::endl;
-		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
-		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0) << " cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles + b.num_4_cycles + b.num_5_cycles; }) << " cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles + b.num_4_cycles + b.num_5_cycles; }) << " cycles in graph." << std::endl;
+
+
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles; }) << " 3-cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
+		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
 
 	}
 

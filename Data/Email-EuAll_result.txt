@@ -1,0 +1,7 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/Email-EuAll_config.txt
+Read matrix cost :0.241 s.
+Before remove nodes, there are 265214
+After remove nodes, there are 70514
+Read matrix cost :0.085 s.
+There are 36300 strongly connected components.
+Calculate strongly connected components costs: 0.052 s.
