@@ -151,7 +151,7 @@ cyclenum countUndirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen
 	
 	newmat = newmat * mat;
 	long long cycle4_part1 = newmat.trace();
-	long long cycle4_num = (cycle4_part1 - 2 * cycle4_part2 - 2 * cycle4_part3) / 8;
+	long long cycle4_num = (cycle4_part1 - cycle4_part2 - 2 * cycle4_part3) / 8;
 
 	newmat = newmat * mat;
 	long long cycle5_part1 = newmat.trace();
@@ -199,11 +199,10 @@ cyclenum countDirectedCycle(Eigen::Matrix<long long int, Eigen::Dynamic, Eigen::
 	
 
 
-	//out << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
-	//out << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
-	//out << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle3_num << " 3-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle4_num << " 4-cycle(s)." << std::endl;
+	//std::cout << "There are " << cycle5_num << " 5-cycle(s)." << std::endl;
 	return cyclenum(cycle3_num, cycle4_num, cycle5_num);
-
 }
 
 /**
@@ -287,6 +286,11 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 				for (auto EI = sub_graph->BegEI(); EI < sub_graph->EndEI(); EI++) {
 					mat(EI.GetSrcNId(), EI.GetDstNId()) = 1;
 				}
+
+				//std::cout << "----------------------------------" << std::endl;
+				//std::cout << mat << std::endl;
+				//std::cout << "----------------------------------" << std::endl;
+
 				cycle_num.push_back(countDirectedCycle(mat));
 			}
 		}
@@ -303,7 +307,12 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 					mat(EI.GetSrcNId(), EI.GetDstNId()) = 1;
 					mat(EI.GetDstNId(), EI.GetSrcNId()) = 1;
 				}
+				std::cout << "----------------------------------" << std::endl;
+				std::cout << mat << std::endl;
+				std::cout << "----------------------------------" << std::endl;
+
 				cycle_num.push_back(countUndirectedCycle(mat));
+				
 			}
 		}
 	}
@@ -315,8 +324,8 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 int main() 
 {
 	// the config data path and result path;
-	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/email-Enron_config.txt";
-	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/email-Enron_result.txt";
+	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/test_data/en_dict_2_config.txt";
+	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/test_data/en_dict_2_result.txt";
 
 	// read config data
 	struct config config;
@@ -384,6 +393,10 @@ int main()
 		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
 		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
 
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles; }) << " 3-cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
+
 	}
 	else {
 		// load edge list
@@ -441,6 +454,9 @@ int main()
 		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles; }) << " 3-cycles in graph." << std::endl;
 		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
 		out << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_3_cycles; }) << " 3-cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_4_cycles; }) << " 4-cycles in graph." << std::endl;
+		std::cout << "There are " << accumulate(cycle_num.begin(), cycle_num.end(), 0, [](long long a, cyclenum b) {return a + b.num_5_cycles; }) << " 5-cycles in graph." << std::endl;
 
 	}
 

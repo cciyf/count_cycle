@@ -1,0 +1,12 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/test_data/test_graph_config.txt
+Read matrix cost :0 s.
+Before remove nodes, there are 15
+After remove nodes, there are 15
+Read matrix cost :0 s.
+There are 3 strongly connected components.
+Calculate strongly connected components costs: 0 s.
+Count all cycles cost : 0 s.
+There are 5 cycles in graph.
+There are 2 3-cycles in graph.
+There are 2 4-cycles in graph.
+There are 1 5-cycles in graph.
