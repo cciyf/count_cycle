@@ -287,9 +287,7 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 					mat(EI.GetSrcNId(), EI.GetDstNId()) = 1;
 				}
 
-				//std::cout << "----------------------------------" << std::endl;
-				//std::cout << mat << std::endl;
-				//std::cout << "----------------------------------" << std::endl;
+				
 
 				cycle_num.push_back(countDirectedCycle(mat));
 			}
@@ -307,9 +305,7 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 					mat(EI.GetSrcNId(), EI.GetDstNId()) = 1;
 					mat(EI.GetDstNId(), EI.GetSrcNId()) = 1;
 				}
-				std::cout << "----------------------------------" << std::endl;
-				std::cout << mat << std::endl;
-				std::cout << "----------------------------------" << std::endl;
+
 
 				cycle_num.push_back(countUndirectedCycle(mat));
 				
@@ -375,6 +371,8 @@ int main()
 		end = clock();
 		elapsed_secs = static_cast<double>(end - start) / CLOCKS_PER_SEC;
 		std::cout << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
+		std::cout << "There are " << G->GetNodes() << " nodes." << std::endl;
+		std::cout << "There are " << G->GetEdges() << " edges." << std::endl;
 		std::cout << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;
 		out << "There are " << SCnComV.Len() << " strongly connected components." << std::endl;
 		out << "Calculate strongly connected components costs: " << elapsed_secs << " s." << std::endl;

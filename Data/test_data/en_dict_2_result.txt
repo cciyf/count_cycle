@@ -1,10 +1,10 @@
 Read matrix : D:/code/C++/count_cycle/cntcycle/Data/test_data/en_dict_2_config.txt
-Read matrix cost :0.053 s.
+Read matrix cost :0.055 s.
 Before remove nodes, there are 91210
 After remove nodes, there are 7770
-Read matrix cost :0.033 s.
+Read matrix cost :0.034 s.
 There are 7765 strongly connected components.
-Calculate strongly connected components costs: 0.007 s.
+Calculate strongly connected components costs: 0.008 s.
 Count all cycles cost : 0 s.
 There are 0 cycles in graph.
 There are 0 3-cycles in graph.
