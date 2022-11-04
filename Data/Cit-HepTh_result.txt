@@ -1,0 +1,12 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/Cit-HepTh_config.txt
+Read matrix cost :0.179 s.
+Before remove nodes, there are 27770
+After remove nodes, there are 26339
+Read matrix cost :0.001 s.
+There are 18655 strongly connected components.
+Calculate strongly connected components costs: 0.034 s.
+Count all cycles cost : 81.364 s.
+There are 29298 cycles in graph.
+There are 521 3-cycles in graph.
+There are 2631 4-cycles in graph.
+There are 26146 5-cycles in graph.

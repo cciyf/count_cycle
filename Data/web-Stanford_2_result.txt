@@ -1,0 +1,7 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/web-Stanford_2_config.txt
+Read matrix cost :0.958 s.
+Before remove nodes, there are 281903
+After remove nodes, there are 275762
+Read matrix cost :0.031 s.
+There are 23773 strongly connected components.
+Calculate strongly connected components costs: 0.257 s.

@@ -1,0 +1,12 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/Wiki-Vote_config.txt
+Read matrix cost :0.033 s.
+Before remove nodes, there are 7115
+After remove nodes, there are 4816
+Read matrix cost :0.001 s.
+There are 3517 strongly connected components.
+Calculate strongly connected components costs: 0.009 s.
+Count all cycles cost : 0.572 s.
+There are 41358940 cycles in graph.
+There are 43975 3-cycles in graph.
+There are 1218152 4-cycles in graph.
+There are 40096813 5-cycles in graph.

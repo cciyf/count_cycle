@@ -320,8 +320,8 @@ std::vector<cyclenum> CntSCCCycle(TCnComV &SCnComV, bool is_directed, PGraph& Gr
 int main() 
 {
 	// the config data path and result path;
-	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/test_data/en_dict_2_config.txt";
-	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/test_data/en_dict_2_result.txt";
+	std::string config_path = "D:/code/C++/count_cycle/cntcycle/Data/web-Stanford_2_config.txt";
+	std::string result_path = "D:/code/C++/count_cycle/cntcycle/Data/web-Stanford_2_result.txt";
 
 	// read config data
 	struct config config;

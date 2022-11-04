@@ -1,0 +1,12 @@
+Read matrix : D:/code/C++/count_cycle/cntcycle/Data/p2p-Gnutella30_config.txt
+Read matrix cost :0.047 s.
+Before remove nodes, there are 36682
+After remove nodes, there are 20245
+Read matrix cost :0.004 s.
+There are 11756 strongly connected components.
+Calculate strongly connected components costs: 0.02 s.
+Count all cycles cost : 118.987 s.
+There are 321 cycles in graph.
+There are 59 3-cycles in graph.
+There are 73 4-cycles in graph.
+There are 189 5-cycles in graph.
